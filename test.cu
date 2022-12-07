@@ -6,8 +6,9 @@
 // CUDA Kernel function to add the elemnets of two arrays on the GPU
 __global__ void add(int n, float *x, float *y)
 {
-    printf("n: %d\n", n);
-  for (int i = 0; i < n; i++)
+  int index = blockIdx.x * blockDim.x + threadIdx.x;
+  int stride = blockDim.x * gridDim.x;
+  for (int i = index; i < n; i+= stride)
       y[i] = x[i] + y[i];
 }
 
@@ -26,7 +27,9 @@ int main(void)
   }
 
   // run kernel on 1M elements on the GPU
-  add<<<1, 1>>>(N, x, y);
+int blockSize = 256;
+int numBlocks = (N + blockSize - 1) / blockSize;
+add<<<numBlocks, blockSize>>>(N, x, y);
 
   // wait for GPU to finish before accessing on host
   cudaDeviceSynchronize();
