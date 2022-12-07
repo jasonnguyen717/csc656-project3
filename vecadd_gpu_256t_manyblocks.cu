@@ -34,7 +34,7 @@ int main(void)
   int blockSize = 256;
   
   int numBlocks = (N + blockSize - 1) / blockSize;
-  printf("thread blocks: %d", numBlocks);
+  printf("thread blocks: %d\n", numBlocks);
   add<<<numBlocks, blockSize>>>(N, x, y);
   // wait for GPU to finish before accessing on host
   cudaDeviceSynchronize();
