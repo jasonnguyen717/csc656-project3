@@ -10,7 +10,7 @@ __global__ void add(int n, float *x, float *y)
   // block represents a group of threads that can be executed serially or in parrallel
   int index = blockIdx.x * blockDim.x + threadIdx.x;
   int stride = blockDim.x * gridDim.x;
-  for (int i = index; i < n; i+= stride)
+  for (int i = index; i < n; i += stride)
       y[i] = x[i] + y[i];
 }
 
